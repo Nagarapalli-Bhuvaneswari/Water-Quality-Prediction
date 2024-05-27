@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Quality Prediction</title>
+    <style>
+        /* Reset some default styles */
+        body, h1, h2, p {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: url('b.jpg') center center no-repeat;
+            background-size: cover;
+            color: #000;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            justify-content: space-between;
+            backdrop-filter: blur(10px); /* Apply a background blur effect */
+        }
+
+        header {
+            background-color: #2a9d8f;
+            color: #fff;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 2.0rem;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0 1rem; /* Margin to position the buttons */
+        }
+
+        .predict-button, .reset-button, .back-button {
+            background-color: #2a9d8f;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: background-color 0.3s ease;
+            margin: 0 10px;
+        }
+
+        .predict-button:hover, .reset-button:hover, .back-button:hover {
+            background-color: #007f74;
+        }
+
+        .input-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .input-group {
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-group label {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-right: 10px;
+            width: 180px; /* Fixed width for labels */
+        }
+
+        .input-group input, .input-group select {
+            font-size: 1rem;
+            padding: 5px;
+            width: 350px;
+            font-weight: bold; /* Make the font bold */
+            color: #000; /* Set font color to black */
+        }
+
+        /* Change the font and color for the "Chloramine" label */
+        .input-group label[for="chloramine"] {
+            font-weight: bold; /* Set the font weight to bold */
+            color: #000; /* Set font color to black */
+        }
+
+        /* Change the font and color for the "Organic Carbon" label */
+        .input-group label[for="organic_carbon"] {
+            font-weight: bold; /* Set the font weight to bold */
+            color: #000; /* Set font color to black */
+        }
+
+        footer {
+            background-color: #2a9d8f;
+            color: #fff;
+            padding: 0.5rem 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Water Quality Prediction</h1>
+        <p>Your Trusted Source for Water Quality Insights</p>
+    </header>
+
+    <form id="myForm" method=post action="/result">
+        <div class="input-container">
+            <div class="input-group">
+                <label for="ph">pH:</label>
+                <input type="number" min="0.0" max="14.0" step="0.000001" placeholder="0 - 14" id="ph" name="ph"   required>
+            </div>
+            <div class="input-group">
+                <label for="hardness">Hardness (mg/L):</label>
+                <input type="number" min="0.0" max="400.0" step="0.000001" placeholder="0 - 400" id="hardness" name="Hardness"   required>
+            </div>
+            <div class="input-group">
+                <label for="solids">Total Solids (mg/L):</label>
+                <input type="number" min="0.0" max="60000.0" step="0.000001" placeholder="0 - 60000" id="solids" name="Solids"   required>
+            </div>
+            <div class="input-group">
+                <label for="chloramine">Chloramine (mg/L):</label>
+                <input type="number" min="0.0" max="50.0" step="0.000001" placeholder="0 - 50" id="chloramine" name="Chloramines"   required>
+            </div>
+            <div class="input-group">
+                <label for="sulfate">Sulfate (mg/L):</label>
+                <input type="number" min="0.0" max="500.0" step="0.000001" placeholder="0 - 500" id="sulfate" name="Sulfate"   required>
+            </div>
+            <div class="input-group">
+                <label for="conductivity">Conductivity (µS/cm):</label>
+                <input type="number" min="0.0" max="2000.0" step="0.000001" placeholder="0 - 2000" id="conductivity" name="Conductivity"   required>
+            </div>
+            <div class="input-group">
+                <label for="organic_carbon">Organic Carbon (mg/L):</label>
+                <input type="number" min="0.0" max="30.0" step="0.000001" placeholder="0 - 30" id="organic_carbon" name="Organic_carbon"   required>
+            </div>
+            <div class="input-group">
+                <label for="trihalomethanes">Trihalomethanes (µg/L):</label>
+                <input type="number" min="0.0" max="180.0" step="0.000001" placeholder="0 - 180" id="trihalomethanes" name="Trihalomethanes"   required>
+            </div>
+            <div class="input-group">
+                <label for="turbidity">Turbidity (NTU):</label>
+                <input type="number" min="0.0" max="10.0" step="0.000001" placeholder="0 - 10" id="turbidity" name="Turbidity"   required>
+            </div>
+            <div class="input-group">
+                <label for="algorithm">Select Algorithm:</label>
+                <select id="algorithm" name="algorithm" required>
+                    <option value="knn">K-Nearest Neighbors</option>
+                    <option value="decision-tree">Decision Tree</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="button-container">
+            <button class="predict-button" type="submit">Predict</button>
+            <button type="reset" class="reset-button">Reset</button>
+            <a href="/"><button class="back-button">Back</button></a>
+        </div>
+    </form>
+
+    <footer>
+        <p>&copy; 2023 Water Quality Prediction</p>
+    </footer>
+
+</body>
+</html>
